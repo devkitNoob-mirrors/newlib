@@ -198,8 +198,12 @@ static char *categories[_LC_LAST] = {
  * Default locale per POSIX.  Can be overridden on a per-target base.
  */
 #ifndef DEFAULT_LOCALE
-#define DEFAULT_LOCALE	"C"
+#ifdef __DEFAULT_UTF8__
+#define DEFAULT_LOCALE	 "C.UTF-8"
+#else
+#define DEFAULT_LOCALE	 "C"
 #define DEFAULT_LOCALE_IS_C
+#endif
 #endif
 
 #ifdef _MB_CAPABLE
@@ -215,8 +219,13 @@ const struct __locale_t __C_locale =
 #ifdef _MB_CAPABLE
   "C",
 #endif
+#if defined ( __DEFAULT_UTF8__ )
+  __utf8_wctomb,
+  __utf8_mbtowc,
+#else
   __ascii_wctomb,
   __ascii_mbtowc,
+#endif
   0,
   DEFAULT_CTYPE_PTR,
   {
@@ -227,9 +236,15 @@ const struct __locale_t __C_locale =
     CHAR_MAX, CHAR_MAX
   },
 #ifndef __HAVE_LOCALE_INFO__
+#ifdef __DEFAULT_UTF8__
+  "\6",
+  "UTF-8",
+  "UTF-8",
+#else
   "\1",
   "ASCII",
   "ASCII",
+#endif
 #else /* __HAVE_LOCALE_INFO__ */
   {
     { NULL, NULL },			/* LC_ALL */
@@ -248,6 +263,7 @@ const struct __locale_t __C_locale =
 };
 #endif /* _MB_CAPABLE */
 
+
 struct __locale_t __global_locale =
 {
   { "C", "C", DEFAULT_LOCALE, "C", "C", "C", "C", },
@@ -258,7 +274,7 @@ struct __locale_t __global_locale =
   "C/" DEFAULT_LOCALE "/C/C/C/C",
 # endif
 #endif
-#ifdef __CYGWIN__
+#if defined ( __CYGWIN__ ) || defined ( __DEFAULT_UTF8__ )
   __utf8_wctomb,
   __utf8_mbtowc,
 #else
@@ -275,9 +291,15 @@ struct __locale_t __global_locale =
     CHAR_MAX, CHAR_MAX
   },
 #ifndef __HAVE_LOCALE_INFO__
+#ifdef __DEFAULT_UTF8__
+  "\6",
+  "UTF-8",
+  "UTF-8",
+#else
   "\1",
   "ASCII",
   "ASCII",
+#endif
 #else /* __HAVE_LOCALE_INFO__ */
   {
     { NULL, NULL },			/* LC_ALL */
