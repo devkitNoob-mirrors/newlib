@@ -8,9 +8,19 @@
 #define MALLOC_ALIGNMENT 16
 #endif
 
-#ifdef _ARCH_PPC
+#ifdef __DEVKITARM__
+#define __DYNAMIC_REENT__
+#endif
+
+#ifdef __DEVKITA64__
+#define MALLOC_ALIGNMENT 16
+#define __DYNAMIC_REENT__
+#endif
+
+#ifdef __DEVKITPPC__
 #define __BUFSIZ__ 32768
 #define MALLOC_ALIGNMENT 64
+#define __DYNAMIC_REENT__
 #endif
 
 #ifdef __AMDGCN__
