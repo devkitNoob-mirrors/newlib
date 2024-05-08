@@ -18,6 +18,9 @@ extern int write(int fd, const void *buf, unsigned int count);
 /*
  * print -- do a raw print of a string
  */ 
+
+#include <unistd.h>
+
 void
 print (ptr)
      char *ptr;

@@ -15,6 +15,8 @@
  */
 extern int read(int fd, void *buf, unsigned int count);
 
+#include <unistd.h>
+
 int
 inbyte ()
 {
