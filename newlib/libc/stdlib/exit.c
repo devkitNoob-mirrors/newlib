@@ -48,12 +48,14 @@ Supporting OS subroutines required: <<_exit>>.
 // exit calls this handler; avoid a hard dependency on findfp by providing a weak global
 void (*__stdio_exit_handler)(void) __attribute__((weak));
 
+#ifndef __DEVKITPPC__
 // exit calls this function; avoid a hard dependency on atexit by providing a simple weak implementation
 __attribute__((weak)) void __call_exitprocs(int rc, void* dso)
 {
     extern void __libc_fini_array(void);
     __libc_fini_array();
 }
+#endif
 
 /*
  * Exit, flushing stdio buffers if necessary.
