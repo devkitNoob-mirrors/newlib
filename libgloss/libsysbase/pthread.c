@@ -267,6 +267,7 @@ pthread_cond_destroy (pthread_cond_t *__cond)
 {
 	if (!__cond)
 		return EINVAL;
+	__cond_close(__cond->cond);
 	return 0;
 }
 
