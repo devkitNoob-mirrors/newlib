@@ -126,6 +126,12 @@ int __libc_cond_wait_recursive(_COND_T *cond, _LOCK_RECURSIVE_T *lock, uint64_t 
 
 }
 
+void __libc_cond_close(_COND_T *cond) {
+
+	if ( __has_syscall(cond_close) ){
+		__syscall_cond_close(cond);
+	}
+}
 
 #ifdef CUSTOM_MALLOC_LOCK
 

@@ -102,6 +102,7 @@ void __SYSCALL(lock_close_recursive) (_LOCK_RECURSIVE_T *lock);
 int  __SYSCALL(cond_signal)(_COND_T *cond);
 int  __SYSCALL(cond_broadcast)(_COND_T *cond);
 int  __SYSCALL(cond_wait)(_COND_T *cond, _LOCK_T *lock, uint64_t timeout_ns);
+void __SYSCALL(cond_close)(_COND_T *cond);
 int  __SYSCALL(cond_wait_recursive)(_COND_T *cond, _LOCK_RECURSIVE_T *lock, uint64_t timeout_ns);
 int  __SYSCALL(thread_create)(struct __pthread_t **thread, void* (*func)(void*), void *arg, void *stack_addr, size_t stack_size);
 void*__SYSCALL(thread_join)(struct __pthread_t *thread);
