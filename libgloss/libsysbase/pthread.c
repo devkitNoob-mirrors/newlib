@@ -106,6 +106,19 @@ pthread_mutex_destroy (pthread_mutex_t *__mutex)
 {
 	if (!__mutex)
 		return EINVAL;
+
+	switch (__mutex->type) {
+		case PTHREAD_MUTEX_NORMAL:
+		case PTHREAD_MUTEX_ERRORCHECK: // todo: error check
+		case PTHREAD_MUTEX_DEFAULT:
+			__lock_close(__mutex->normal);
+			break;
+		case PTHREAD_MUTEX_RECURSIVE:
+			__lock_close_recursive(__mutex->recursive);
+			break;
+		default:
+			return EINVAL;
+	}
 	return 0;
 }
 
