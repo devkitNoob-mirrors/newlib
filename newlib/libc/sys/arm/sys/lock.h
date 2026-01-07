@@ -49,6 +49,7 @@ extern int __libc_lock_try_acquire_recursive(_LOCK_RECURSIVE_T *lock);
 static inline int __libc_cond_init(_COND_T *cond) {
         *cond = __COND_INITIALIZER;
 }
+static inline void __libc_cond_close(_COND_T *cond ) {}
 
 extern int __libc_cond_signal(_COND_T *cond);
 extern int __libc_cond_broadcast(_COND_T *cond);
@@ -101,6 +102,9 @@ CLASS _COND_T NAME = __COND_INITIALIZER;
 
 #define __cond_init(NAME) \
         __libc_cond_init(&(NAME))
+
+#define __cond_close(NAME) \
+	__libc_cond_close(&(NAME))
 
 #define __cond_signal(NAME) \
         __libc_cond_signal(&(NAME))
