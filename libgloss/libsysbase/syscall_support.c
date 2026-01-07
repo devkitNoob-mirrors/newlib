@@ -126,12 +126,32 @@ int __libc_cond_wait_recursive(_COND_T *cond, _LOCK_RECURSIVE_T *lock, uint64_t 
 
 }
 
+#ifdef __DEVKITPPC__
+
+
+void __libc_lock_close(_LOCK_T *lock ) {
+
+	if ( __has_syscall(lock_close) ){
+		__syscall_lock_close(lock);
+	}
+}
+
+void __libc_lock_close_recursive(_LOCK_RECURSIVE_T *lock ) {
+
+	if ( __has_syscall(lock_close_recursive) ){
+		__syscall_lock_close_recursive(lock);
+	}
+}
+
+
 void __libc_cond_close(_COND_T *cond) {
 
 	if ( __has_syscall(cond_close) ){
 		__syscall_cond_close(cond);
 	}
 }
+
+#endif
 
 #ifdef CUSTOM_MALLOC_LOCK
 

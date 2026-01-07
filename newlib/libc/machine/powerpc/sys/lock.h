@@ -28,13 +28,15 @@ static inline void __libc_lock_init(_LOCK_T *lock) {
         *lock = __LOCK_INITIALIZER;
 }
 
-static inline void __libc_lock_close(_LOCK_T *lock ) {}
-
 static inline void __libc_lock_init_recursive(_LOCK_RECURSIVE_T *lock) {
         *lock = __LOCK_INITIALIZER_RECURSIVE;
 }
 
-static inline void __libc_lock_close_recursive(_LOCK_RECURSIVE_T *lock ) {}
+extern void __libc_lock_close(_LOCK_T *lock );
+extern void __libc_lock_close_recursive(_LOCK_RECURSIVE_T *lock );
+
+extern int  __libc_lock(_LOCK_T *lock);
+extern int  __libc_lock_recursive(_LOCK_RECURSIVE_T *lock);
 
 extern void __libc_lock_acquire(_LOCK_T *lock);
 extern void __libc_lock_acquire_recursive(_LOCK_RECURSIVE_T *lock);
