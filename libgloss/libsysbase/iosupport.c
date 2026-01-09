@@ -55,10 +55,7 @@ const devoptab_t dotab_stdnull = {
 //---------------------------------------------------------------------------------
 const devoptab_t *devoptab_list[STD_MAX] = {
 //---------------------------------------------------------------------------------
-	&dotab_stdnull, &dotab_stdnull, &dotab_stdnull, &dotab_stdnull,
-	&dotab_stdnull, &dotab_stdnull, &dotab_stdnull, &dotab_stdnull,
-	&dotab_stdnull, &dotab_stdnull, &dotab_stdnull, &dotab_stdnull,
-	&dotab_stdnull, &dotab_stdnull, &dotab_stdnull, &dotab_stdnull
+	&dotab_stdnull, &dotab_stdnull, &dotab_stdnull
 };
 
 //---------------------------------------------------------------------------------
@@ -77,10 +74,8 @@ int FindDevice(const char* name) {
 		if(devoptab_list[i]) {
 			namelen = strlen(devoptab_list[i]->name);
 			if(dev_namelen == namelen && strncmp(devoptab_list[i]->name,name,namelen)==0 ) {
-				if ( name[namelen] == ':' || (isdigit(name[namelen]) && name[namelen+1] ==':' )) {
-					dev = i;
-					break;
-				}
+				dev = i;
+				break;
 			}
 		}
 		i++;
@@ -95,7 +90,7 @@ int RemoveDevice( const char* name) {
 	int dev = FindDevice(name);
 
 	if ( -1 != dev ) {
-		devoptab_list[dev] = &dotab_stdnull;
+		devoptab_list[dev] = NULL;
 		return 0;
 	}
 
@@ -110,12 +105,11 @@ int AddDevice( const devoptab_t* device) {
 	int devnum;
 
 	for ( devnum = 3;devnum <STD_MAX; devnum++ ) {
+		// null pointer is available
+		if ( devoptab_list[devnum] == NULL ) break;
 
-		if ( (!strcmp(devoptab_list[devnum]->name, device->name) &&
-					strlen(devoptab_list[devnum]->name) == strlen(device->name) ) ||
-			 		!strcmp(devoptab_list[devnum]->name, "stdnull")
-			 )
-			 break;
+		if ( !strcmp(devoptab_list[devnum]->name, device->name) && strlen(devoptab_list[devnum]->name) == strlen(device->name) )
+			break;
 	}
 
 	if ( devnum == STD_MAX ) {
